@@ -5,3 +5,16 @@ def fib(n):
 
 if __name__ == '__main__':
     print(fib(6))
+
+# fib(5) + fib(4)
+# fib(5) + fib(3) + fib(2)
+# fib(5) + fib(3) + fib(1) + fib(0)
+# fib(5) + fib(2) + fib(1) + fib(1) + fib(0)
+# fib(5) + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(4) + fib(3)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(4) + fib(2) + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(4) + fib(1) + fib(0)  + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(3) + fib(2)  + fib(1) + fib(0)  + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(3) + fib(1) + fib(0)  + fib(1) + fib(0)  + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(2) + fib(1) + fib(1) + fib(0)  + fib(1) + fib(0)  + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
+# fib(1) + fib(0) + fib(1) + fib(1) + fib(0) + fib(1) + fib(0)  + fib(1)  + fib(1) + fib(0) + fib(1) + fib(1) + fib(0)
