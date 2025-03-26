@@ -38,8 +38,9 @@ if __name__ == "__main__":
 
     best_cost, best_combination, best_profit = brute_force(actions=actions, budget=budget)
     total_benef = round(best_profit * 100 / best_cost, 2)
-    print("Best possible combination :")
+    print(f"Best possible combination : {list((action.id for action in best_combination))}")
+    print(f"\nTotal cost: \n\t\t{BLD}{best_cost}{NO_STL} €\n"
+          f"Potential profit: \n\t\t{BLD}{best_profit}{NO_STL} € ({total_benef}%)")
+    print("\nDetails : \n")
     for action in best_combination:
-        print(f" — {action}\n Profit value = {action.profit_value}€")
-    print(f"Total cost: \n\t\t{BLD}{best_cost}{NO_STL}€\n"
-          f"Potential profit: \n\t\t{BLD}{best_profit}{NO_STL}€ ({total_benef}%)")
+        print(f" — {action}\n Profit value = {action.profit_value} €")

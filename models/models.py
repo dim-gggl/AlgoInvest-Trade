@@ -42,10 +42,10 @@ class Action:
         self.profit_value = self.cost * self.profit_percentage / 100
 
     def __str__(self):
-        return (f"Action #{self.id}: cost = {self.cost}€, "
-                f"benefit = {self.profit_percentage}% "
-                f"soit {self.profit_value:.2f}€ de profit")
+        return (f"Action #{self.id}: Cost = {self.cost} €, "
+                f"Benefit = {self.profit_percentage}% "
+                f"(about {self.profit_value:.2f} € profit)")
 
     def __repr__(self):
-        return (f"Action #({self.id}, cost={self.cost}€, "
-            f"benefit={self.profit_percentage}%, profit={self.profit_value:.2f}€)")
+        return (f"Action #({self.id}, Cost={self.cost} €, "
+            f"Benefit={self.profit_percentage}%, Profit={self.profit_value:.2f} €)")

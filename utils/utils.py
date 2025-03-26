@@ -1,7 +1,7 @@
 import csv
 from models.models import Action
 
-def load_actions(file_path: str="./data/Liste_actions.csv"):
+def load_actions(file_path: str="data/Liste_actions.csv"):
     """
     Load a list of actions from a CSV file.
     Args:
@@ -15,7 +15,7 @@ def load_actions(file_path: str="./data/Liste_actions.csv"):
         reader = csv.DictReader(csvfile)
         for row in reader:
             try:
-                action = Action(name=row["Actions"], cost=row["Cost"], profit_percentage=row["Benefits"])
+                action = Action(name=row["Actions #"], cost=row["Coût par action (en euros)"], profit_percentage=row["Bénéfice (après 2 ans)"])
                 actions.append(action)
             except Exception as e:
                 print(f"Ignored action {row}: {e}")
