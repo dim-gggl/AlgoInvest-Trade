@@ -26,7 +26,7 @@ def brute_force(actions: list, budget: float) -> tuple:
                 total_cost = sum(action.cost for action in combo)
                 if total_cost <= budget:
                     # If the sum of all combination costs is less than the budget
-                    total_profit = sum(action.profit_value for action in combo)
+                    total_profit = sum(action.profit for action in combo)
                     # Combination is set as the best
                     if total_profit > best_profit:
                         best_profit = total_profit

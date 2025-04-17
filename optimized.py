@@ -24,7 +24,7 @@ def optimized(actions: list, budget: float):
 
     for i in range(n):
         cost = int(actions[i].cost * 100)
-        profit = actions[i].profit_value
+        profit = actions[i].profit
         # Iterate over the budget from the maximum down to the cost of the current action
         for b in range(B, max(min_cost, cost) - 1, -1):
             # Check if including the current action gives a better profit
@@ -43,6 +43,6 @@ def optimized(actions: list, budget: float):
             b -= int(actions[i].cost * 100)
 
     total_cost = sum(action.cost for action in selected_actions)
-    total_profit = sum(action.profit_value for action in selected_actions)
+    total_profit = sum(action.profit for action in selected_actions)
 
     return total_cost, selected_actions, total_profit
