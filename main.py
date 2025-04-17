@@ -1,41 +1,73 @@
-from utils import load_actions
+import sys
 from bruteforce import brute_force
 from optimized import optimized
 from config import BLD, NO_STL
+from view import bruteforce_warning, display_selected_actions
+from utils import (
+    load_actions,
+    save_ouput,
+    parse_cli_args,
+    choose_algorithm,
+    calculate_total_benefit
+)
 
+"""
+This function executes both algorithms of the program
+on the available data sources.
 
-def main(actions=load_actions, budget=500, file_path='data/Liste_actions.csv', is_optimized=False):
-    actions = actions(file_path)
-    budget = budget
-    run_algo = None
-    if not is_optimized and len(actions) > 20:
-        print(
-            f"\n{'-[ \033[1;5;91mWARNING\033[0m ]-':^70}\n{f'Important amount of operations ({len(actions)})':^70}\n"
-            f"{'Continue with the brute force method ? ':^70}"
-            )
-        choice = input(f"\n\n{'Yes/No (y/n)?':^70}\n{'':35}").strip().lower()
-        if choice == "y":
-            run_algo = brute_force
-        else:
-            input("\n\n" + f"{'We should try with the optimized algorithm, safer !':70}\n{"":35}")
-            run_algo = optimized
-    else:
-        run_algo = optimized
+Note: You can pass options directly via the terminal:
 
-    best_cost, best_combination, best_profit = run_algo(actions=actions, budget=budget)
+    Usage: python3 main.py <options>
+
+Options:
+  -dp        Run the script with the dynamic programming algorithm.
+              Defaults to 'Brute Force'.
+  -f <path>  Specify the CSV file to analyze.
+
+Args:
+    file_path: Path to the CSV file. Defaults to "data/Liste_actions.csv".
+               Can also accept "data/Dataset_1.csv" or "data/Dataset_2.csv".
+
+Returns:
+    tuple:
+      - float: The total cost of the selected actions.
+      - list:  A list of the corresponding Action instances.
+      - float: The total profit.
+"""
+def main(file_path:str, is_optimized=False) -> None:
+    actions = load_actions(file_path)
+    budget = 500
+    is_optimized = choose_algorithm(
+        actions, is_optimized
+        )
     if is_optimized:
-        best_combination.reverse()
-    try:
-        total_benef = round(best_profit * 100 / best_cost, 2)
-    except ZeroDivisionError:
-        print(f"{best_profit=}, {[str(a) for a in best_combination] if best_combination else None} {best_cost=}")
-        total_benef = 0
-    print(f"\n\n{'BEST POSSIBLE COMBINATION':^70} \n{', '.join([str(action.id) for action in best_combination]):^70}")
-    print(f"\n{'TOTAL COST (€)':^70}\n{BLD}{best_cost:^70}{NO_STL} \n"
-          f"\n{'POTENTIAL PROFIT ':^70}\n{f'{best_profit:.2f} € ({total_benef}%)':^70}\n")
-    print(f"\n{'DETAILS':^70}\n")
-    for action in best_combination:
-        print(f"{str(action):^70}")
+        run_algo = optimized
+    else:
+        run_algo = brute_force
+
+    best_cost, best_combination, best_profit = run_algo(
+        actions=actions, budget=budget
+    )
+
+    total_benef = calculate_total_benefit(
+        best_profit, best_cost, best_combination
+        )
+
+    display_selected_actions(
+        len(actions),
+        best_cost,
+        best_combination,
+        best_profit,
+        total_benef,
+        dp=is_optimized
+    )
+
+    save_ouput(
+        src_name=file_path,
+        data_list=best_combination,
+        dp=is_optimized
+        )
 
 if __name__ == "__main__":
-    main(is_optimized=True)
+    file_path, dp = parse_cli_args()
+    main(file_path=file_path, is_optimized=dp)

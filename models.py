@@ -1,11 +1,5 @@
-from config import format_action_id, format_percentage_benef
+from config import format_percentage_benef
 
-
-class ActionPriceError(Exception):
-    pass
-
-class PercentageValueError(Exception):
-    pass
 
 class Action:
     """
@@ -15,42 +9,56 @@ class Action:
         name (str): The name of the action.
         id (str): A formatted identifier generated from the name.
         cost (float): The cost of the action in euros. Must be a positive value.
-        profit_percentage (float): The profit percentage of the action.
-        profit_value (float): The calculated profit in euros after 2 years.
+        profit_value (float): The profit percentage of the action.
+        profit (float): The calculated profit in euros after 2 years.
     """
-    def __init__(self, name: str, cost: str, profit_percentage: str):
+    def __init__(
+        self,
+        name: str,
+        cost_value: str | float | int,
+        profit_percentage: str | float | int
+        ) -> None:
+
         self.name = name
+        self.id = name.split("-")[-1].strip()
+        self.cost = float(cost_value)
         try:
-            # Format or generate the ID from the name
-            self.id = format_action_id(name)
-        except (TypeError, ValueError) as e:
-            raise ActionPriceError("Invalid name or ID for the action : " + str(e))
+            self.profit_value = format_percentage_benef(
+                profit_percentage
+                )
+        except Exception as e:
+            print(f"Error : {e}")
 
-        # Conversion and validation of the cost
-        try:
-            cost_value = float(cost)
-            if cost_value <= 0:
-                raise ActionPriceError("The action cost must be positive")
-            self.cost = cost_value
-        except ValueError:
-            raise ActionPriceError("The cost must be convertible to a float")
+        self.profit = self.compute_profit()
 
-        # Conversion of the profit percentage
-        try:
-            self.profit_percentage = format_percentage_benef(profit_percentage)
-        except ValueError:
-            raise ActionPriceError("The profit must be convertible to a float")
-
-        # Calculation of profit in euros after 2 years
-        if self.profit_percentage == 0:
-            self.profit_value = 0
+    def loss(self):
+        if self.profit_value < 0:
+            return self.profit_value * -1
         else:
-            self.profit_value = self.cost * self.profit_percentage / 100
+            return None
+
+    def compute_profit(self):
+        if self.profit_value > 0:
+            return self.cost * self.profit_value * 0.01
+        elif self.profit_value == 0:
+            return 0
+        else:
+            print(f"No profit, loss of {self.loss()}%")
 
     def __str__(self):
-        return (f"{f'Action #{self.id}':<14}{f'Cost = {self.cost} €':<18}"
-                f"{f'Benefit = {self.profit_percentage}% (about {self.profit_value:.2f} € profit)':<40}")
+        return (
+            f"{f'Action #{self.id}':<15} {self.cost:>8} €   "
+            f"{f'{self.profit_value}':>8} % {f'(about {self.profit:.2f} € profit)':^32}"
+            )
 
     def __repr__(self):
         return (f"Action #{self.id}, Cost={self.cost} €, "
-            f"Benefit={self.profit_percentage}%, Profit={self.profit_value:.2f} €)")
+            f"Benefit={self.profit_value}%, Profit={self.profit:.2f} €)")
+
+
+class ActionPriceError(Exception):
+    pass
+
+
+class PercentageValueError(Exception):
+    pass
