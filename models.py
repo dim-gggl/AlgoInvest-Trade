@@ -1,4 +1,4 @@
-from config import format_percentage_benef
+from config import format_percentage_benef, colorize
 
 
 class Action:
@@ -47,13 +47,47 @@ class Action:
 
     def __str__(self):
         return (
-            f"{f'Action #{self.id}':<15} {self.cost:>8} €   "
-            f"{f'{self.profit_value}':>8} % {f'(about {self.profit:.2f} € profit)':^32}"
+            f"{f'Action # {self.id}':<15} {self.cost:>8} €   "
+            f"{f'{self.profit_value}':>8} % "
+            f"{f'(about {self.profit:.2f} € profit)':^32}"
             )
 
     def __repr__(self):
         return (f"Action #{self.id}, Cost={self.cost} €, "
             f"Benefit={self.profit_value}%, Profit={self.profit:.2f} €)")
+
+
+class CorruptedAction(Action):
+    def __init__(
+            self,
+            name,
+            cost_value: str,
+            profit_percentage: str
+            ) -> None:
+
+        self.name = name
+        self.id = name.split("-")[-1].strip()
+        self.cost = float(cost_value)
+        self.profit_value = float(
+            profit_percentage.replace("%", "").strip()
+            )
+        self.profit = super().compute_profit()
+
+    def __str__(self):
+        profit = round(self.profit, 2)
+        return (
+            f"{f'{self.name}':^17} {colorize(self.cost):^10} €    "
+            f"{colorize(self.profit_value):^12}{'%':^5}   "
+            f"{f'({colorize(profit)} €)':^22}"
+        )
+
+    def __repr__(self):
+        return (f"Action #{self.id}, Cost={self.cost} €, "
+                f"Benefit={self.profit_value}%, "
+                f"Profit={self.profit:.2f} €)")
+
+
+
 
 
 class ActionPriceError(Exception):

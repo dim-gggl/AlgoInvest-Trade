@@ -1,3 +1,12 @@
+def colorize(val: float) -> str:
+    if val < 0:
+        col = "\033[1;38;5;196m"
+    elif val == 0:
+        col = "\033[1;38;5;214m"
+    else:
+        col = "\033[1;38;5;14m"
+    return f"{col}{val:.2f}\033[0m"
+
 BLD = "\033[1m"
 NO_STL = "\033[0m"
 
