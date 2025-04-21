@@ -3,9 +3,7 @@ def optimized(actions: list, budget: float):
     Solve the investment optimization problem
     using dynamic programming.
     Args:
-        actions (list):
-                        - cost (float): Action cost.
-                        - profit_value (float): Action profit.
+        actions (list): List of action objects.
         budget (float): Maximum budget.
     Returns:
         tuple: (total_cost (float), selected_actions (list),
@@ -20,7 +18,7 @@ def optimized(actions: list, budget: float):
 
     # A table to track which actions are
     # included in the optimal solution
-    #
+
     dp = [0] * (B + 1)
     keep = [[False] * (B + 1) for _ in range(n)]
     min_cost = min(
